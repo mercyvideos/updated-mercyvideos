@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="robots" content="index, follow">
+    
+    <title>Portfolio | Video Editing Work Samples | Mercy Videos</title>
+    <meta name="title" content="Portfolio | Video Editing Work Samples | Mercy Videos">
+    <meta name="description" content="View our portfolio of professional video editing work. YouTube videos, Reels, Shorts, podcasts, real estate, and ads. See before and after samples.">
+    <link rel="canonical" href="https://mercyvideos.in/portfolio" />
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mercyvideos.in/portfolio">
+    <meta property="og:title" content="Portfolio | Mercy Videos">
+    <meta property="og:description" content="Professional video editing portfolio with work samples from YouTube, Reels, Shorts, podcasts, real estate, and more.">
+    
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #C042FF 0%, #7ed1f2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        body {
+            background-color: #0e0e0e;
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+            visibility: visible;
+        }
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #C042FF, #7ed1f2);
+            z-index: 9999;
+        }
+        /* Enhanced Portfolio Animations */
+        @keyframes cardGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(192, 66, 255, 0.3), 0 24px 80px rgba(0, 0, 0, 0.35); }
+            50% { box-shadow: 0 0 40px rgba(192, 66, 255, 0.6), 0 24px 100px rgba(192, 66, 255, 0.2); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .portfolio-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 66, 255, 0.1) 0%, transparent 50%, rgba(126, 209, 242, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .portfolio-card:hover {
+            animation: cardGlow 2s ease-in-out infinite;
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(192, 66, 255, 0.6);
+        }
+        .portfolio-card:hover::before {
+            opacity: 1;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class", 
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#C042FF", 
+                        secondary: "#7ed1f2"
+                    },
+                    fontFamily: {
+                        display: ["Space Grotesk", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+          :root {
+              --purple: #C042FF;
+              --blue:   #7ed1f2;
+              --bg:     #0a0a0a;
+              --card-bg: rgba(255,255,255,0.04);
+              --border:  rgba(255,255,255,0.07);
+              --text:    #e8e8e8;
+              --muted:   rgba(232,232,232,0.5);
+          }
+
+          /* ── FOOTER ── */
+          footer {
+              background: #070707;
+              border-top: 1px solid transparent;
+              border-image: linear-gradient(90deg, transparent, var(--purple), var(--blue), transparent) 1;
+              position: relative;
+              overflow: hidden;
+          }
+          footer::before {
+              content: '';
+              position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+              width: 600px; height: 200px;
+              background: radial-gradient(ellipse, rgba(192,66,255,0.07), transparent 70%);
+              pointer-events: none;
+          }
+          .footer-inner {
+              padding: 80px 5% 40px;
+              display: grid;
+              grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+              gap: 3rem;
+          }
+          .footer-logo {
+              font-family: 'Syne', sans-serif;
+              font-size: 1.4rem; font-weight: 800;
+              background: linear-gradient(135deg, var(--purple), var(--blue));
+              -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+              margin-bottom: 1rem; display: block;
+          }
+          .footer-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.75; max-width: 280px; }
+          .footer-col h4 {
+              font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700;
+              letter-spacing: 2px; text-transform: uppercase;
+              color: rgba(255,255,255,0.5); margin-bottom: 1.4rem;
+          }
+          .footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+          .footer-links a {
+              color: var(--muted); text-decoration: none; font-size: 0.88rem;
+              transition: color 0.3s;
+              display: inline-flex; align-items: center; gap: 0.4rem;
+          }
+          .footer-links a::before { content: '→'; opacity: 0; transform: translateX(-6px); transition: 0.3s; font-size: 0.75rem; color: var(--purple); }
+          .footer-links a:hover { color: #fff; }
+          .footer-links a:hover::before { opacity: 1; transform: translateX(0); }
+          .contact-item { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; }
+          .contact-icon {
+              width: 32px; height: 32px; border-radius: 8px;
+              background: rgba(192,66,255,0.1); border: 1px solid rgba(192,66,255,0.2);
+              display: flex; align-items: center; justify-content: center;
+              font-size: 0.85rem; flex-shrink: 0;
+          }
+          .contact-item span { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+          .contact-item a { color: var(--blue); text-decoration: none; }
+          .contact-item a:hover { text-decoration: underline; }
+          .footer-divider {
+              height: 1px;
+              background: linear-gradient(90deg, transparent, var(--border), transparent);
+              margin: 0 5%;
+          }
+          .footer-bottom {
+              padding: 1.4rem 5%;
+              display: flex; justify-content: space-between; align-items: center;
+              flex-wrap: wrap; gap: 1rem;
+          }
+          .footer-copy { font-size: 0.8rem; color: rgba(232,232,232,0.35); }
+          .social-links { display: flex; gap: 0.75rem; }
+          .social-link {
+              width: 36px; height: 36px; border-radius: 8px;
+              border: 1px solid var(--border);
+              background: var(--card-bg);
+              display: flex; align-items: center; justify-content: center;
+              color: var(--muted); text-decoration: none; font-size: 0.9rem;
+              transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+          }
+          .social-link:hover { border-color: var(--purple); color: #fff; box-shadow: 0 0 15px rgba(192,66,255,0.3); }
+          .footer-btn {
+              display: inline-flex;
+              align-items: center;
+              padding: 0.6rem 1.3rem;
+              font-size: 0.82rem;
+              font-weight: 600;
+              color: #fff;
+              background: linear-gradient(135deg, var(--purple), #9b2fe0);
+              border-radius: 50px;
+              text-decoration: none;
+              margin-top: 0.5rem;
+              box-shadow: 0 0 20px rgba(192,66,255,0.3);
+              transition: box-shadow 0.3s, transform 0.2s;
+          }
+          .footer-btn:hover { box-shadow: 0 0 35px rgba(192,66,255,0.6); transform: translateY(-1px); }
+
+          @media (max-width: 900px) {
+              .footer-inner { grid-template-columns: 1fr 1fr; }
+          }
+          @media (max-width: 640px) {
+              .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+          }
+      </style>
+</head>
+<body class="bg-surface text-white selection:bg-primary/30">
+    <div id="scroll-progress"></div>
+
+    <!-- TopNavBar -->
+    <!-- ═══════════════════════════════════════════════════════ NAVBAR START -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center pt-6 px-4">
+    <div class="w-full max-w-7xl bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-between px-8 py-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)]">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(192,66,255,0.8)] italic">Mercy Videos</a>
+        
+        <div class="hidden md:flex gap-8 items-center">
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="index.html">Home</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="about.html">About Us</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="services.html">Services</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="portfolio.html">Portfolio</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="blog.html">Blog</a>
+        </div>
+
+        <a href="contact.html" class="bg-primary hover:bg-primary/80 text-white font-inter tracking-widest uppercase text-xs font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-transform shadow-[0_0_15px_rgba(192,66,255,0.4)]">
+            Contact Us
+        </a>
+    </div>
+</nav>
+<!-- ═══════════════════════════════════════════════════════ NAVBAR END -->
+
+    <!-- Hero -->
+    <header class="relative pt-40 pb-20 min-h-[50vh] flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-black/60 to-black"></div>
+        <div class="max-w-7xl mx-auto px-8 relative z-10 fade-in-section text-center">
+            <h1 class="font-display text-5xl md:text-[70px] leading-tight font-black uppercase mb-6">
+                Our <span class="gradient-text">Portfolio</span>
+            </h1>
+            <p class="text-lg md:text-xl text-white/70 max-w-3xl mx-auto">
+                Explore our collection of professional video editing work across all niches and platforms.
+            </p>
+        </div>
+    </header>
+
+    <!-- Portfolio Categories -->
+    <section class="py-20 bg-[#0a0a0a] fade-in-section">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-12">
+                <p class="font-inter tracking-[0.3em] uppercase text-xs text-secondary font-bold mb-4">PROJECT TYPES</p>
+                <h2 class="font-display text-4xl md:text-5xl font-bold">Explore Portfolio Categories</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="glass-panel rounded-3xl p-6 text-center border border-white/10 hover:border-primary/50 transition-all hover:shadow-[0_0_30px_rgba(192,66,255,0.3)] hover:-translate-y-1">
+                    <span class="material-symbols-outlined text-primary text-3xl mb-3 block">smart_display</span>
+                    <p class="font-bold uppercase text-sm">YouTube Edits</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6 text-center border border-white/10 hover:border-secondary/30 transition-all">
+                    <span class="material-symbols-outlined text-secondary text-3xl mb-3 block">subscriptions</span>
+                    <p class="font-bold uppercase text-sm">Shorts & Reels</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6 text-center border border-white/10 hover:border-primary/30 transition-all">
+                    <span class="material-symbols-outlined text-primary text-3xl mb-3 block">mic</span>
+                    <p class="font-bold uppercase text-sm">Podcast Clips</p>
+                    
+                </div>
+                <div class="glass-panel rounded-3xl p-6 text-center border border-white/10 hover:border-secondary/30 transition-all">
+                    <span class="material-symbols-outlined text-secondary text-3xl mb-3 block">home</span>
+                    <p class="font-bold uppercase text-sm">Real Estate</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6 text-center border border-white/10 hover:border-primary/30 transition-all">
+                    <span class="material-symbols-outlined text-primary text-3xl mb-3 block">play_circle</span>
+                    <p class="font-bold uppercase text-sm">Ad Videos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="py-32 bg-black fade-in-section">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- YouTube Video 1 -->
+                <a href="https://www.youtube.com/watch?v=gOecj6Zktik" target="_blank" rel="noopener noreferrer" class="portfolio-card group relative aspect-video rounded-2xl overflow-hidden glass-panel border border-white/10 cursor-pointer block">
+                    <img class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110" alt="YouTube Gaming Video Editing" src="https://img.youtube.com/vi/gOecj6Zktik/maxresdefault.jpg"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent opacity-95"></div>
+                    <div class="absolute top-5 right-5 w-14 h-14 rounded-full bg-white/10 border border-white/30 backdrop-blur-xl flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:scale-110 transition-all duration-300 shadow-[0_0_20px_rgba(192,66,255,0.3)]">
+                        <span class="material-symbols-outlined text-white text-4xl ml-0.5">play_arrow</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-black group-hover:via-black/70">
+                        <h3 class="font-display text-xl font-bold uppercase mb-2 text-white drop-shadow-lg group-hover:text-primary transition-colors">Gaming Highlight Video</h3>
+                        <span class="font-inter text-[11px] tracking-widest text-primary font-bold uppercase">YouTube</span>
+                    </div>
+                </a>
+
+                <!-- Reels Video 1 -->
+                <a href="https://www.youtube.com/watch?v=5fOtpN-gXT4" target="_blank" rel="noopener noreferrer" class="portfolio-card group relative aspect-video rounded-2xl overflow-hidden glass-panel border border-white/10 lg:mt-6 cursor-pointer block">
+                    <img class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Instagram Reels Editing" src="https://img.youtube.com/vi/5fOtpN-gXT4/maxresdefault.jpg"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent opacity-95"></div>
+                    <div class="absolute top-5 right-5 w-12 h-12 rounded-full bg-white/15 border border-white/25 backdrop-blur-xl flex items-center justify-center group-hover:bg-secondary group-hover:border-secondary transition-colors">
+                        <span class="material-symbols-outlined text-white text-3xl ml-0.5">play_arrow</span>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-black group-hover:via-black/70">
+                        <h3 class="font-display text-xl font-bold uppercase mb-2 text-white drop-shadow-lg group-hover:text-secondary transition-colors">Beauty Reel</h3>
+                        <span class="font-inter text-[11px] tracking-widest text-secondary font-bold uppercase">Instagram Reels</span>
+                    </div>
+                </a>
+
+                <!-- Podcast Video -->
+                <a href="https://www.youtube.com/watch?v=5pUnAqu-8Mk" target="_blank" rel="noopener noreferrer" class="portfolio-card group relative aspect-video rounded-2xl overflow-hidden glass-panel border border-white/10 cursor-pointer block">
+                    <img class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Podcast Video Editing" src="https://img.youtube.com/vi/5pUnAqu-8Mk/maxresdefault.jpg"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent opacity-95"></div>
+                    <div class="absolute top-5 right-5 w-12 h-12 rounded-full bg-white/15 border border-white/25 backdrop-blur-xl flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-colors">
+                        <span class="material-symbols-outlined text-white text-3xl ml-0.5">play_arrow</span>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-black group-hover:via-black/70">
+                        <h3 class="font-display text-xl font-bold uppercase mb-2 text-white drop-shadow-lg group-hover:text-primary transition-colors">Sharp Park Market</h3>
+                        <span class="font-inter text-[11px] tracking-widest text-primary font-bold uppercase">YouTube Shorts</span>
+                    </div>
+                </a>
+
+                <!-- Real Estate Video -->
+                <a href="https://www.youtube.com/watch?v=XIbINFoUojo" target="_blank" rel="noopener noreferrer" class="portfolio-card group relative aspect-video rounded-2xl overflow-hidden glass-panel border border-white/10 cursor-pointer block">
+                    <img class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Real Estate Property Video" src="https://img.youtube.com/vi/XIbINFoUojo/maxresdefault.jpg"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent opacity-95"></div>
+                    <div class="absolute top-5 right-5 w-12 h-12 rounded-full bg-white/15 border border-white/25 backdrop-blur-xl flex items-center justify-center group-hover:bg-secondary group-hover:border-secondary transition-colors">
+                        <span class="material-symbols-outlined text-white text-3xl ml-0.5">play_arrow</span>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-black group-hover:via-black/70">
+                        <h3 class="font-display text-xl font-bold uppercase mb-2 text-white drop-shadow-lg group-hover:text-secondary transition-colors">Web3 Development</h3>
+                        <span class="font-inter text-[11px] tracking-widest text-secondary font-bold uppercase">Interview</span>
+                    </div>
+                </a>
+
+                <!-- Ad Video -->
+                <a href="https://www.youtube.com/watch?v=ye25OKG6hzw" target="_blank" rel="noopener noreferrer" class="portfolio-card group relative aspect-video rounded-2xl overflow-hidden glass-panel border border-white/10 lg:mt-6 cursor-pointer block">
+                    <img class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Social Media Ad Video" src="https://img.youtube.com/vi/ye25OKG6hzw/maxresdefault.jpg"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent opacity-95"></div>
+                    <div class="absolute top-5 right-5 w-12 h-12 rounded-full bg-white/15 border border-white/25 backdrop-blur-xl flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-colors">
+                        <span class="material-symbols-outlined text-white text-3xl ml-0.5">play_arrow</span>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-black group-hover:via-black/70">
+                        <h3 class="font-display text-xl font-bold uppercase mb-2 text-white drop-shadow-lg group-hover:text-primary transition-colors">Savor the Story</h3>
+                        <span class="font-inter text-[11px] tracking-widest text-primary font-bold uppercase">Facebook/Instagram AD</span>
+                    </div>
+                </a>
+
+                <!-- Corporate Video -->
+                <a href="https://www.youtube.com/watch?v=E1LlICynAQ4" target="_blank" rel="noopener noreferrer" class="portfolio-card group relative aspect-video rounded-2xl overflow-hidden glass-panel border border-white/10 cursor-pointer block">
+                    <img class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110" alt="Corporate Training Video" src="https://img.youtube.com/vi/E1LlICynAQ4/maxresdefault.jpg"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent opacity-95"></div>
+                    <div class="absolute top-5 right-5 w-12 h-12 rounded-full bg-white/15 border border-white/25 backdrop-blur-xl flex items-center justify-center group-hover:bg-secondary group-hover:border-secondary transition-colors">
+                        <span class="material-symbols-outlined text-white text-3xl ml-0.5">play_arrow</span>
+                    </div>
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/60 to-transparent group-hover:from-black group-hover:via-black/70">
+                        <h3 class="font-display text-xl font-bold uppercase mb-2 text-white drop-shadow-lg group-hover:text-secondary transition-colors">NaviGuide Demo</h3>
+                        <span class="font-inter text-[11px] tracking-widest text-secondary font-bold uppercase">Corporate</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-32 bg-[#080808] fade-in-section">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="font-display text-5xl font-black text-primary mb-2">100+</div>
+                    <p class="text-white/60 text-sm">Videos Edited</p>
+                </div>
+                <div>
+                    <div class="font-display text-5xl font-black text-secondary mb-2">10M+</div>
+                    <p class="text-white/60 text-sm">Total Views Generated</p>
+                </div>
+                <div>
+                    <div class="font-display text-5xl font-black text-primary mb-2">50+</div>
+                    <p class="text-white/60 text-sm">Happy Clients</p>
+                </div>
+                <div>
+                    <div class="font-display text-5xl font-black text-secondary mb-2">4.5&#9733;</div>
+                    <p class="text-white/60 text-sm">Client Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-32 relative overflow-hidden fade-in-section">
+        <div class="absolute inset-0 bg-primary/5"></div>
+        <div class="relative z-10 max-w-7xl mx-auto px-8 text-center">
+            <h2 class="font-display text-5xl font-bold mb-8 uppercase">Your Project Could Be Next</h2>
+            <p class="text-xl text-white/60 max-w-3xl mx-auto mb-10">Let's create something amazing for your video content.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="contact.html" class="bg-primary text-white font-inter tracking-[0.2em] uppercase text-xs font-black px-10 py-5 rounded-full hover:scale-105 transition-all">
+                    Get Custom Quote
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- ═══════════════════════════════════════════════════════ FOOTER START -->
+<footer>
+  <div class="footer-inner">
+
+    <!-- Brand -->
+    <div>
+      <span class="footer-logo">Mercy Videos</span>
+      <p class="footer-desc">A premium video editing agency based in India, serving creators, real estate professionals, and businesses worldwide with fast, reliable, and high-quality editing.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Services -->
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul class="footer-links">
+        <li><a href="video-editing-service.html">Video Editing</a></li>
+        <li><a href="youtube-management.html">YouTube Management</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <span>Email<br><a href="mailto:hello@mercyvideos.in">hello@mercyvideos.in</a></span>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <span>Based in India<br>Serving Worldwide Clients</span>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏰</div>
+        <span>Mon – Sat<br>Response within 24 Hours</span>
+      </div>
+      <a href="contact.html" class="footer-btn">Contact Us →</a>
+    </div>
+
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Mercy Videos. All rights reserved.</span>
+    <div class="social-links">
+      <a class="social-link" href="#" title="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a class="social-link" href="#" title="YouTube">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a class="social-link" href="#" title="LinkedIn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+<!-- ═══════════════════════════════════════════════════════ FOOTER END -->
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById('scroll-progress');
+            if (progressBar) progressBar.style.width = scrolled + '%';
+        });
+
+        const observerOptions = {root: null, rootMargin: '0px', threshold: 0.1};
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    navObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach((section) => {
+            navObserver.observe(section);
+        });
+    </script>
+<script>
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('scroll-progress').style.width = scrolled + '%';
+    });
+
+    // Intersection Observer for fade-in animations
+    const navObserver = new IntersectionObserver((entries, navObserver) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                navObserver.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in-section').forEach((section) => {
+        navObserver.observe(section);
+    });
+</script>
+
+<script>
+    // Highlight current page in navbar
+    document.addEventListener("DOMContentLoaded", () => {
+        let currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        
+        // If on a sub-service page, highlight the parent Services tab
+        if (currentPath === 'video-editing-service.html' || currentPath === 'youtube-management.html') {
+            currentPath = 'services.html';
+        }
+        
+        document.querySelectorAll('nav a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath) {
+                link.classList.remove('text-white/70');
+                link.classList.add('text-primary');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

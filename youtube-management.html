@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Management – Mercy Videos</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #C042FF;
+      --blue: #7ed1f2;
+      --bg: #0a0a0a;
+      --card-bg: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.07);
+      --text: #e8e8e8;
+      --muted: rgba(232,232,232,0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      z-index: 9999;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 10px var(--purple);
+    }
+
+    /* ── NAVBAR ── */
+    
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.35rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-decoration: none; letter-spacing: -0.5px;
+    }
+
+    
+    
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-4px; left:0;
+      width:0; height:1px;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      transition: width 0.3s;
+    }
+    
+    .nav-links a:hover::after { width:100%; }
+
+    
+    
+    .nav-cta::after { display: none !important; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s; }
+
+    
+    .mobile-menu a { color: var(--text); text-decoration: none; font-size: 1rem; font-weight: 500; }
+    .mobile-menu.open { display: flex; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-bg::before {
+      content:''; position:absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(192,66,255,0.13) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-60%, -55%);
+      animation: pulseGlow 6s ease-in-out infinite alternate;
+    }
+    .hero-bg::after {
+      content:''; position:absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(126,209,242,0.09) 0%, transparent 70%);
+      bottom: 10%; right: 5%;
+      animation: pulseGlow 8s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes pulseGlow {
+      from { opacity: 0.6; transform: translate(-60%, -55%) scale(1); }
+      to { opacity: 1; transform: translate(-60%, -55%) scale(1.15); }
+    }
+
+    /* grid lines */
+    .grid-overlay {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.4rem 1.1rem;
+      border: 1px solid rgba(192,66,255,0.35);
+      border-radius: 50px;
+      background: rgba(192,66,255,0.07);
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--purple);
+      margin-bottom: 1.8rem;
+      position: relative; z-index: 1;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -2px;
+      position: relative; z-index: 1;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: var(--muted); max-width: 580px;
+      line-height: 1.75; position: relative; z-index: 1;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; position: relative; z-index: 1; }
+
+    .btn-primary {
+      padding: 0.85rem 2rem; border-radius: 50px;
+      background: linear-gradient(135deg, var(--purple), #9b2fe0);
+      color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem;
+      box-shadow: 0 0 30px rgba(192,66,255,0.35);
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(192,66,255,0.6); }
+
+    .btn-secondary {
+      padding: 0.85rem 2rem; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+      color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.3s, background 0.3s, transform 0.25s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-secondary:hover { border-color: rgba(126,209,242,0.4); background: rgba(126,209,242,0.07); transform: translateY(-3px); }
+
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 4rem;
+      position: relative; z-index: 1;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .num {
+      font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat .label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.5px; margin-top: 0.2rem; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 100px 5%; }
+
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--purple);
+      margin-bottom: 0.8rem; display: block;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800; line-height: 1.15;
+      letter-spacing: -1px; margin-bottom: 1rem;
+    }
+
+    .section-title .accent {
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .section-desc { color: var(--muted); max-width: 560px; line-height: 1.75; font-size: 1rem; }
+
+    /* ── WHAT WE MANAGE ── */
+    #manage { background: var(--bg); }
+
+    .manage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+
+    .manage-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .manage-card::before {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(192,66,255,0.06), transparent 60%);
+      opacity:0; transition: opacity 0.3s;
+    }
+    .manage-card:hover { transform: translateY(-6px); border-color: rgba(192,66,255,0.35); box-shadow: 0 10px 40px rgba(192,66,255,0.12); }
+    .manage-card:hover::before { opacity:1; }
+
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(192,66,255,0.2), rgba(126,209,242,0.1));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.1rem;
+      border: 1px solid rgba(192,66,255,0.2);
+    }
+
+    .manage-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .manage-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── WHY IT WORKS ── */
+    #why {
+      background: linear-gradient(180deg, #0a0a0a 0%, #0d0a12 100%);
+      position: relative; overflow: hidden;
+    }
+    #why::before {
+      content:''; position:absolute;
+      width:800px; height:800px;
+      background: radial-gradient(circle, rgba(192,66,255,0.07) 0%, transparent 70%);
+      top:50%; left:50%; transform:translate(-50%,-50%);
+      pointer-events:none;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .why-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(10px);
+      position: relative; overflow: hidden;
+    }
+    .why-card::after {
+      content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+    }
+    .why-card:hover { transform: translateY(-5px); border-color: rgba(192,66,255,0.3); box-shadow: 0 10px 40px rgba(192,66,255,0.1); }
+    .why-card:hover::after { transform: scaleX(1); }
+
+    .why-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .why-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .why-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .why-stat {
+      font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ── GROWTH SYSTEM ── */
+    #growth { background: var(--bg); }
+
+    .timeline-header {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; margin-bottom: 4rem;
+    }
+
+    .timeline {
+      position: relative; max-width: 900px; margin: 0 auto;
+    }
+
+    .timeline::before {
+      content:''; position:absolute;
+      left: 50%; top:0; bottom:0; width:2px;
+      background: linear-gradient(180deg, var(--purple), var(--blue), transparent);
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      display: flex; align-items: flex-start; gap: 2rem;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .timeline-item:nth-child(even) .tl-content { text-align: right; }
+
+    .tl-content {
+      flex: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .tl-content:hover { border-color: rgba(192,66,255,0.3); box-shadow: 0 8px 30px rgba(192,66,255,0.1); }
+
+    .tl-step {
+      display: flex; flex-direction: column; align-items: center;
+      flex-shrink: 0;
+    }
+
+    .tl-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), #7b2ebe);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+      box-shadow: 0 0 25px rgba(192,66,255,0.4);
+      position: relative; z-index: 1;
+    }
+
+    .tl-content h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .tl-content p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+    .tl-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--purple); background: rgba(192,66,255,0.1);
+      border: 1px solid rgba(192,66,255,0.2);
+      padding: 0.2rem 0.7rem; border-radius: 50px;
+      margin-bottom: 0.6rem;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 120px 5%;
+      background: linear-gradient(180deg, #0a0a0a 0%, #0d0a12 100%);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content:''; position:absolute;
+      width:900px; height:900px;
+      background: radial-gradient(circle, rgba(192,66,255,0.1) 0%, transparent 70%);
+      top:50%; left:50%; transform:translate(-50%,-50%);
+      pointer-events:none;
+    }
+
+    .cta-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
+      margin-bottom: 1.5rem; position: relative; z-index: 1;
+    }
+
+    .cta-section p { color: var(--muted); font-size: 1rem; max-width: 500px; margin: 0 auto 2.5rem; position: relative; z-index: 1; }
+
+    .cta-glow {
+      position: absolute; bottom:-200px; left:50%; transform:translateX(-50%);
+      width:600px; height:400px;
+      background: radial-gradient(ellipse, rgba(192,66,255,0.15), transparent 70%);
+      pointer-events:none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070707;
+      border-top: 1px solid transparent;
+      border-image: linear-gradient(90deg, transparent, var(--purple), var(--blue), transparent) 1;
+      position: relative; overflow: hidden;
+    }
+
+    footer::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:600px; height:200px;
+      background: radial-gradient(ellipse, rgba(192,66,255,0.07), transparent 70%);
+      pointer-events:none;
+    }
+
+    .footer-inner {
+      padding: 80px 5% 40px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+      gap: 3rem;
+    }
+
+    .footer-logo {
+      font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem; display: block;
+    }
+
+    .footer-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.75; max-width: 280px; }
+
+    .footer-col h4 {
+      font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); margin-bottom: 1.4rem;
+    }
+
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.88rem;
+      transition: color 0.3s;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .footer-links a::before { content:'→'; opacity:0; transform:translateX(-6px); transition: 0.3s; font-size:0.75rem; color: var(--purple); }
+    .footer-links a:hover { color: #fff; }
+    .footer-links a:hover::before { opacity:1; transform:translateX(0); }
+
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .contact-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(192,66,255,0.1); border: 1px solid rgba(192,66,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; flex-shrink: 0;
+    }
+    .contact-item span { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+    .contact-item a { color: var(--blue); text-decoration: none; }
+    .contact-item a:hover { text-decoration: underline; }
+
+    .footer-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 5%;
+    }
+
+    .footer-bottom {
+      padding: 1.4rem 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    .footer-copy { font-size: 0.8rem; color: rgba(232,232,232,0.35); }
+
+    .social-links { display: flex; gap: 0.75rem; }
+    .social-link {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); text-decoration: none; font-size: 0.9rem;
+      transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+    .social-link:hover { border-color: var(--purple); color: #fff; box-shadow: 0 0 15px rgba(192,66,255,0.3); }
+
+    /* ── FADE-IN ── */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+    .stagger-5 { transition-delay: 0.5s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .timeline::before { left: 26px; }
+      .timeline-item { flex-direction: row; }
+    }
+
+    @media (max-width: 640px) {
+      
+      .hamburger { display: flex; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero h1 { letter-spacing: -1px; }
+      .hero-stats { gap: 1.5rem; }
+    }
+
+    /* floating particles */
+    .particle {
+      position: absolute; border-radius: 50%;
+      pointer-events: none; opacity: 0.4;
+    }
+  </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+          tailwind.config = {
+              darkMode: "class",
+              theme: {
+                  extend: {
+                      colors: {
+                          primary: "#C042FF",
+                          secondary: "#7ed1f2",
+                          surface: "#131313",
+                          background: "#0e0e0e"
+                      },
+                      fontFamily: {
+                          inter: ["Inter", "sans-serif"],
+                          display: ["Space Grotesk", "sans-serif"]
+                      }
+                  }
+              }
+          };
+      </script>
+</head>
+<body class="bg-surface text-white selection:bg-primary/30">
+
+
+
+<!-- NAVBAR -->
+<div id="scroll-progress"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ NAVBAR START -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center pt-6 px-4">
+    <div class="w-full max-w-7xl bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-between px-8 py-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)]">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(192,66,255,0.8)] italic">Mercy Videos</a>
+        
+        <div class="hidden md:flex gap-8 items-center">
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="index.html">Home</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="about.html">About Us</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="services.html">Services</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="portfolio.html">Portfolio</a>
+            <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="blog.html">Blog</a>
+        </div>
+
+        <a href="contact.html" class="bg-primary hover:bg-primary/80 text-white font-inter tracking-widest uppercase text-xs font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-transform shadow-[0_0_15px_rgba(192,66,255,0.4)]">
+            Contact Us
+        </a>
+    </div>
+</nav>
+<!-- ═══════════════════════════════════════════════════════ NAVBAR END -->
+
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <span class="hero-badge fade-in">
+    <span class="dot"></span>
+    Done-For-You YouTube Growth System
+  </span>
+
+  <h1 class="fade-in stagger-1">
+    We Run Your Channel<br>
+    While You <span class="accent">Grow Your Business</span>
+  </h1>
+
+  <p class="hero-sub fade-in stagger-2">
+    We don't manage channels. We build growth machines.<br>
+    Strategy · Thumbnails · Editing · SEO · Uploads · Analytics — all handled.
+  </p>
+
+  <div class="hero-btns fade-in stagger-3">
+    <a href="contact.html" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.02 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+      Book Strategy Call
+    </a>
+  </div>
+
+  <div class="hero-stats fade-in stagger-4">
+    <div class="hero-stat">
+      <div class="num">30+</div>
+      <div class="label">Channels Managed</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">3.6M+</div>
+      <div class="label">Views Generated</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">95%</div>
+      <div class="label">Client Retention</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">72hr</div>
+      <div class="label">Turnaround</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE MANAGE -->
+<section id="manage">
+  <div style="text-align:center; margin-bottom:0.5rem;">
+    <span class="section-label fade-in">Full-Service Management</span>
+    <h2 class="section-title fade-in stagger-1">Everything Your Channel Needs.<br><span class="accent">Nothing Left to Chance.</span></h2>
+    <p class="section-desc fade-in stagger-2" style="margin: 0.8rem auto 0;">Content without strategy is noise. We engineer every element of your channel for maximum growth and retention.</p>
+  </div>
+
+  <div class="manage-grid">
+    <!-- 9 cards -->
+    <div class="manage-card fade-in stagger-1">
+      <div class="card-icon">🎯</div>
+      <h3>Channel Strategy</h3>
+      <p>Deep-dive channel audits, competitor analysis, niche positioning, and a 90-day roadmap built to win.</p>
+    </div>
+    <div class="manage-card fade-in stagger-2">
+      <div class="card-icon">📅</div>
+      <h3>Content Planning</h3>
+      <p>Data-driven content calendars aligned to trending topics and your audience's peak interest windows.</p>
+    </div>
+    <div class="manage-card fade-in stagger-3">
+      <div class="card-icon">✍️</div>
+      <h3>Script Support</h3>
+      <p>Hooks, structure, pacing — we craft scripts engineered for watch time, retention, and action.</p>
+    </div>
+    <div class="manage-card fade-in stagger-1">
+      <div class="card-icon">🎬</div>
+      <h3>Video Editing</h3>
+      <p>Fast-paced, cinematic edits with motion graphics, captions, and B-roll that keep viewers locked in.</p>
+    </div>
+    <div class="manage-card fade-in stagger-2">
+      <div class="card-icon">🖼️</div>
+      <h3>Thumbnail Design</h3>
+      <p>High-CTR thumbnails built with proven visual psychology. Tested, iterated, and always on-brand.</p>
+    </div>
+    <div class="manage-card fade-in stagger-3">
+      <div class="card-icon">🔍</div>
+      <h3>SEO Optimization</h3>
+      <p>Title formulas, description frameworks, tag research, and chapter markers to dominate search rankings.</p>
+    </div>
+    <div class="manage-card fade-in stagger-1">
+      <div class="card-icon">📤</div>
+      <h3>Upload Management</h3>
+      <p>We handle end-to-end publishing — scheduling, metadata, playlists, end screens, and cards.</p>
+    </div>
+    <div class="manage-card fade-in stagger-2">
+      <div class="card-icon">📊</div>
+      <h3>Analytics Reports</h3>
+      <p>Monthly performance breakdowns with clear insights, benchmarks, and action items to keep scaling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY IT WORKS -->
+<section id="why">
+  <div style="text-align:center; margin-bottom:0.5rem;">
+    <span class="section-label fade-in">The Edge</span>
+    <h2 class="section-title fade-in stagger-1">Why Our System <span class="accent">Outperforms</span><br>DIY Every Time</h2>
+    <p class="section-desc fade-in stagger-2" style="margin: 0.8rem auto 0;">We don't guess. We use data, creative precision, and proven frameworks to deliver results most agencies never achieve.</p>
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card fade-in stagger-1">
+      <div class="why-icon">📆</div>
+      <div class="why-stat">3x</div>
+      <h3>Consistency Wins</h3>
+      <p>Consistent uploads signal YouTube's algorithm. We keep you on schedule without the burnout.</p>
+    </div>
+    <div class="why-card fade-in stagger-2">
+      <div class="why-icon">👁️</div>
+      <div class="why-stat">+62%</div>
+      <h3>Better CTR</h3>
+      <p>Scroll-stopping thumbnails and titles engineered to earn the click before anyone watches a second.</p>
+    </div>
+    <div class="why-card fade-in stagger-3">
+      <div class="why-icon">⏱️</div>
+      <div class="why-stat">+47%</div>
+      <h3>Better Retention</h3>
+      <p>Hook-driven edits and scripting techniques that reduce drop-off and push watch time through the roof.</p>
+    </div>
+    <div class="why-card fade-in stagger-4">
+      <div class="why-icon">📈</div>
+      <div class="why-stat">5x</div>
+      <h3>Higher Growth Rate</h3>
+      <p>Clients who switch to managed systems average 5× faster subscriber growth within 90 days.</p>
+    </div>
+    <div class="why-card fade-in stagger-5">
+      <div class="why-icon">⚡</div>
+      <div class="why-stat">40h+</div>
+      <h3>Saves You Time</h3>
+      <p>Reclaim 40+ hours a month. Focus on your business while we run your channel full-time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH SYSTEM -->
+<section id="growth">
+  <div class="timeline-header">
+    <span class="section-label fade-in">Our Process</span>
+    <h2 class="section-title fade-in stagger-1">The Growth System That<br><span class="accent">Actually Works</span></h2>
+    <p class="section-desc fade-in stagger-2">Four phases. Zero guesswork. Proven at scale across hundreds of channels in every niche.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item fade-in">
+      <div class="tl-content">
+        <span class="tl-tag">Phase 01</span>
+        <h3>Audit Channel</h3>
+        <p>We tear down your current channel with precision — analysing performance data, audience retention maps, competitive gaps, and hidden opportunities others miss.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">1</div>
+      </div>
+      <div style="flex:1"></div>
+    </div>
+
+    <div class="timeline-item fade-in stagger-2">
+      <div style="flex:1"></div>
+      <div class="tl-step">
+        <div class="tl-num">2</div>
+      </div>
+      <div class="tl-content">
+        <span class="tl-tag">Phase 02</span>
+        <h3>Build Strategy</h3>
+        <p>Custom growth blueprint: content pillars, upload schedule, thumbnail style guide, SEO keyword bank, and revenue pathways — all built around your specific goals.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fade-in stagger-3">
+      <div class="tl-content">
+        <span class="tl-tag">Phase 03</span>
+        <h3>Produce Content</h3>
+        <p>Our team handles scripting support, professional editing, thumbnail design, SEO metadata, and scheduled uploads. You record. We handle everything else.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">3</div>
+      </div>
+      <div style="flex:1"></div>
+    </div>
+
+    <div class="timeline-item fade-in stagger-4">
+      <div style="flex:1"></div>
+      <div class="tl-step">
+        <div class="tl-num">4</div>
+      </div>
+      <div class="tl-content">
+        <span class="tl-tag">Phase 04</span>
+        <h3>Optimize & Scale</h3>
+        <p>Monthly analytics reviews, A/B thumbnail tests, content iteration based on real data. As you grow, our systems scale with you — faster, stronger, bigger.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-glow"></div>
+  <span class="section-label fade-in" style="display:block">The Question Is Simple</span>
+  <h2 class="fade-in stagger-1">
+    Your Competitors Are Growing<br>
+    <span style="background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">On YouTube. Are You?</span>
+  </h2>
+  <p class="fade-in stagger-2">Every week you delay is a week your competition gains ground. Let's change that — starting now.</p>
+  <a href="contact.html" class="btn-primary fade-in stagger-3" style="display:inline-flex; margin: 0 auto;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.02 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+    Book Free Strategy Call
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <!-- Brand -->
+    <div>
+      <span class="footer-logo">Mercy Videos</span>
+      <p class="footer-desc">A premium video editing agency based in India, serving creators, real estate professionals, and businesses worldwide with fast, reliable, and high-quality editing.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Services -->
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul class="footer-links">
+        <li><a href="video-editing-service.html">Video Editing</a></li>
+        <li><a href="youtube-management.html">YouTube Management</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <span>Email<br><a href="mailto:hello@mercyvideos.in">hello@mercyvideos.in</a></span>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <span>Based in India<br>Serving Worldwide Clients</span>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏰</div>
+        <span>Mon – Sat<br>Response within 24 Hours</span>
+      </div>
+      <a href="contact.html" class="btn-primary" style="font-size:0.82rem; padding:0.6rem 1.3rem; margin-top:0.5rem; display:inline-flex;">Contact Us →</a>
+    </div>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Mercy Videos. All rights reserved.</span>
+    <div class="social-links">
+      <a class="social-link" href="#" title="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a class="social-link" href="#" title="YouTube">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a class="social-link" href="#" title="LinkedIn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  
+
+  
+
+  // Intersection Observer fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+<script>
+    // Scroll Progress Bar
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.getElementById('scroll-progress').style.width = scrolled + '%';
+    });
+
+    // Intersection Observer for fade-in animations
+    const navObserver = new IntersectionObserver((entries, navObserver) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                navObserver.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in-section').forEach((section) => {
+        navObserver.observe(section);
+    });
+</script>
+
+<script>
+    // Highlight current page in navbar
+    document.addEventListener("DOMContentLoaded", () => {
+        let currentPath = window.location.pathname.split('/').pop() || 'index.html';
+        
+        // If on a sub-service page, highlight the parent Services tab
+        if (currentPath === 'video-editing-service.html' || currentPath === 'youtube-management.html') {
+            currentPath = 'services.html';
+        }
+        
+        document.querySelectorAll('nav a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath) {
+                link.classList.remove('text-white/70');
+                link.classList.add('text-primary');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
