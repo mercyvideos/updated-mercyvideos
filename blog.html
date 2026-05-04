@@ -37,9 +37,6 @@
     <link rel="icon" href="images/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="images/120726443a521a650d3aa8f8aedb8173.png" sizes="180x180">
 
-    <!-- Netlify Identity (required for Decap CMS) -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
     <link href="css/style.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
@@ -449,19 +446,6 @@
 <!-- ═══════════════════════════════════════════════════════ FOOTER END -->
 
 <script>
-// ═══════════════════════════════════════════════
-// NETLIFY IDENTITY REDIRECT (required for CMS login)
-// ═══════════════════════════════════════════════
-if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-        if (!user) {
-            window.netlifyIdentity.on("login", () => {
-                document.location.href = "/admin/";
-            });
-        }
-    });
-}
-
 // ═══════════════════════════════════════════════
 // LOAD BLOG POSTS FROM _posts/ via GitHub API
 // ═══════════════════════════════════════════════
