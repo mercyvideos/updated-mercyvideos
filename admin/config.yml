@@ -2,6 +2,8 @@ backend:
   name: git-gateway
   repo: mercyvideos/updated-mercyvideos
   branch: main
+  identity_url: https://delightful-druid-09e5d4.netlify.app
+  gateway_url: https://delightful-druid-09e5d4.netlify.app/.netlify/git/github
 
 # Where uploaded images are stored
 media_folder: "images/blog"
