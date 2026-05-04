@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mercy Videos | Blog Admin</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    // Set API URL BEFORE Decap CMS loads — this is the key fix
+    // Points to your Netlify site where Identity is enabled
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.init({
+        APIUrl: "https://delightful-druid-09e5d4.netlify.app/.netlify/identity"
+      });
+    } else {
+      document.addEventListener("DOMContentLoaded", function() {
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.init({
+            APIUrl: "https://delightful-druid-09e5d4.netlify.app/.netlify/identity"
+          });
+        }
+      });
+    }
+  </script>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
