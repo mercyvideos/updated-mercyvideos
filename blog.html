@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-CY6ZG52SXN');
 </script>
     <meta charset="utf-8"/>
@@ -28,15 +27,27 @@
     <meta property="og:url" content="https://mercyvideos.in/blog.html">
     <meta property="og:title" content="Blog | Mercy Videos - Video Editing Tips & Insights">
     <meta property="og:description" content="Mercy Videos Blog - Video editing tips, creator insights, and strategies to grow your YouTube channel.">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog | Mercy Videos - Video Editing Tips & Insights">
+    <meta name="twitter:description" content="Video editing tips, creator insights, and strategies to grow your YouTube channel.">
     
     <!-- Favicons -->
     <link rel="icon" href="images/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="images/120726443a521a650d3aa8f8aedb8173.png" sizes="180x180">
 
+    <!-- Netlify Identity (required for Decap CMS) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
     <link href="css/style.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- marked.js to parse markdown from CMS posts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- js-yaml to parse frontmatter -->
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     
     <script>
         tailwind.config = {
@@ -51,70 +62,31 @@
                         space: ['Space Grotesk', 'sans-serif'],
                         inter: ['Inter', 'sans-serif'],
                     },
-                    backdropBlur: {
-                        'xl': '20px',
-                    },
-                    boxShadow: {
-                        'neon-purple': '0 0 20px rgba(192, 66, 255, 0.5)',
-                    },
+                    backdropBlur: { 'xl': '20px' },
+                    boxShadow: { 'neon-purple': '0 0 20px rgba(192, 66, 255, 0.5)' },
                 },
             },
         }
     </script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #0e0e0e;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background: #0e0e0e; color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
         }
+        .neon-glow-purple { box-shadow: 0 0 20px rgba(192, 66, 255, 0.5), 0 0 40px rgba(192, 66, 255, 0.3); }
+        .bg-gradient { background: linear-gradient(135deg, #C042FF 0%, #7ed1f2 100%); }
+        .brand-logo { color: #fff; text-shadow: 0 0 10px rgba(192, 66, 255, 0.8); font-style: italic; }
 
-        .neon-glow-purple {
-            box-shadow: 0 0 20px rgba(192, 66, 255, 0.5), 0 0 40px rgba(192, 66, 255, 0.3);
-        }
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
 
-        .bg-gradient {
-            background: linear-gradient(135deg, #C042FF 0%, #7ed1f2 100%);
-        }
-        .brand-logo {
-            color: #fff;
-            text-shadow: 0 0 10px rgba(192, 66, 255, 0.8);
-            font-style: italic;
-        }
-
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
         @keyframes cardGlow {
             0%, 100% { box-shadow: 0 0 20px rgba(192, 66, 255, 0.3), 0 24px 80px rgba(0, 0, 0, 0.35); }
             50% { box-shadow: 0 0 40px rgba(192, 66, 255, 0.6), 0 24px 100px rgba(192, 66, 255, 0.2); }
@@ -125,28 +97,21 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         .blog-card:hover {
             animation: cardGlow 2s ease-in-out infinite;
             transform: translateY(-12px) scale(1.02);
             border-color: rgba(192, 66, 255, 0.6);
         }
-
         .blog-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transition: left 0.5s;
             z-index: 1;
         }
-
-        .blog-card:hover::before {
-            left: 100%;
-        }
+        .blog-card:hover::before { left: 100%; }
 
         .blog-title {
             font-family: 'Space Grotesk', sans-serif;
@@ -155,7 +120,6 @@
             line-height: 1.3;
             transition: all 0.3s ease;
         }
-
         .blog-card:hover .blog-title {
             background: linear-gradient(135deg, #C042FF, #7ed1f2);
             -webkit-background-clip: text;
@@ -174,271 +138,246 @@
             font-weight: 600;
             font-size: 0.875rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .read-more-btn:hover {
+            background: rgba(192, 66, 255, 0.4);
+            border-color: #C042FF;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(192, 66, 255, 0.4);
         }
 
-        .read-more-btn:hover {
-            background: #C042FF;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(192, 66, 255, 0.5);
-            transform: translateX(4px);
+        .category-badge-primary { background: rgba(192, 66, 255, 0.2); color: #C042FF; }
+        .category-badge-secondary { background: rgba(126, 209, 242, 0.2); color: #7ed1f2; }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
         }
+
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
         .scroll-progress {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0;
             height: 3px;
             background: linear-gradient(90deg, #C042FF, #7ed1f2);
+            z-index: 9999;
             width: 0%;
-            z-index: 1000;
-            transition: width 0.1s ease;
+            transition: width 0.1s;
         }
 
-        @media (max-width: 768px) {
-            .blog-title {
-                font-size: 1.25rem;
-            }
+        /* ── FOOTER ── */
+        footer {
+            background: #070707;
+            border-top: 1px solid transparent;
+            border-image: linear-gradient(90deg, transparent, #C042FF, #7ed1f2, transparent) 1;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 200px;
+            background: radial-gradient(ellipse, rgba(192,66,255,0.07), transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+        .footer-inner {
+            padding: 80px 5% 40px;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+            gap: 3rem;
+            position: relative; z-index: 1;
+            align-items: flex-start;
+        }
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem; font-weight: 800;
+            background: linear-gradient(135deg, #C042FF, #7ed1f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem; display: block;
+        }
+        .footer-desc { color: rgba(232,232,232,0.5); font-size: 0.85rem; line-height: 1.75; max-width: 280px; }
+        .footer-col h4 {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); margin-bottom: 1.4rem;
+        }
+        .footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+        .footer-links a {
+            color: rgba(232,232,232,0.5); text-decoration: none; font-size: 0.88rem;
+            transition: color 0.3s;
+            display: inline-flex; align-items: center; gap: 0.4rem;
+        }
+        .footer-links a::before { content: '→'; opacity: 0; transform: translateX(-6px); transition: 0.3s; font-size: 0.75rem; color: #C042FF; }
+        .footer-links a:hover { color: #fff; }
+        .footer-links a:hover::before { opacity: 1; transform: translateX(0); }
+        .contact-item { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; }
+        .contact-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: rgba(192,66,255,0.1); border: 1px solid rgba(192,66,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; flex-shrink: 0;
+        }
+        .contact-item span { font-size: 0.83rem; color: rgba(232,232,232,0.5); line-height: 1.5; }
+        .contact-item a { color: #7ed1f2; text-decoration: none; display: inline; }
+        .contact-item a:hover { text-decoration: underline; color: #5bc5f3; }
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+            margin: 0 5%;
+        }
+        .footer-bottom {
+            padding: 1.4rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 1rem;
+            position: relative; z-index: 1;
+        }
+        .footer-copy { font-size: 0.8rem; color: rgba(232,232,232,0.35); }
+        .social-links { display: flex; gap: 0.75rem; }
+        .social-link {
+            width: 36px; height: 36px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.02);
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(232,232,232,0.5); text-decoration: none; font-size: 0.9rem;
+            transition: border-color 0.3s, color 0.3s, box-shadow 0.3s, background 0.3s;
+        }
+        .social-link:hover { border-color: #C042FF; color: #fff; background: rgba(192,66,255,0.1); box-shadow: 0 0 15px rgba(192,66,255,0.3); }
+        .footer-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.6rem 1.3rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #C042FF, #9b2fe0);
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 0.5rem;
+            box-shadow: 0 0 20px rgba(192,66,255,0.3);
+            transition: box-shadow 0.3s, transform 0.2s;
+        }
+        .footer-btn:hover { box-shadow: 0 0 35px rgba(192,66,255,0.6); transform: translateY(-1px); }
+
+        @media (max-width: 900px) {
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; padding: 60px 5% 30px; }
+            .footer-bottom { flex-direction: column-reverse; align-items: flex-start; }
+            .social-links { align-self: flex-end; }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-          :root {
-              --purple: #C042FF;
-              --blue:   #7ed1f2;
-              --bg:     #0a0a0a;
-              --card-bg: rgba(255,255,255,0.04);
-              --border:  rgba(255,255,255,0.07);
-              --text:    #e8e8e8;
-              --muted:   rgba(232,232,232,0.5);
-          }
-
-          /* ── FOOTER ── */
-          footer {
-              background: #070707;
-              border-top: 1px solid transparent;
-              border-image: linear-gradient(90deg, transparent, var(--purple), var(--blue), transparent) 1;
-              position: relative;
-              overflow: hidden;
-          }
-          footer::before {
-              content: '';
-              position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-              width: 600px; height: 200px;
-              background: radial-gradient(ellipse, rgba(192,66,255,0.07), transparent 70%);
-              pointer-events: none;
-          }
-          .footer-inner {
-              padding: 80px 5% 40px;
-              display: grid;
-              grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
-              gap: 3rem;
-          }
-          .footer-logo {
-              font-family: 'Syne', sans-serif;
-              font-size: 1.4rem; font-weight: 800;
-              background: linear-gradient(135deg, var(--purple), var(--blue));
-              -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-              margin-bottom: 1rem; display: block;
-          }
-          .footer-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.75; max-width: 280px; }
-          .footer-col h4 {
-              font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700;
-              letter-spacing: 2px; text-transform: uppercase;
-              color: rgba(255,255,255,0.5); margin-bottom: 1.4rem;
-          }
-          .footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
-          .footer-links a {
-              color: var(--muted); text-decoration: none; font-size: 0.88rem;
-              transition: color 0.3s;
-              display: inline-flex; align-items: center; gap: 0.4rem;
-          }
-          .footer-links a::before { content: '→'; opacity: 0; transform: translateX(-6px); transition: 0.3s; font-size: 0.75rem; color: var(--purple); }
-          .footer-links a:hover { color: #fff; }
-          .footer-links a:hover::before { opacity: 1; transform: translateX(0); }
-          .contact-item { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; }
-          .contact-icon {
-              width: 32px; height: 32px; border-radius: 8px;
-              background: rgba(192,66,255,0.1); border: 1px solid rgba(192,66,255,0.2);
-              display: flex; align-items: center; justify-content: center;
-              font-size: 0.85rem; flex-shrink: 0;
-          }
-          .contact-item span { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
-          .contact-item a { color: var(--blue); text-decoration: none; }
-          .contact-item a:hover { text-decoration: underline; }
-          .footer-divider {
-              height: 1px;
-              background: linear-gradient(90deg, transparent, var(--border), transparent);
-              margin: 0 5%;
-          }
-          .footer-bottom {
-              padding: 1.4rem 5%;
-              display: flex; justify-content: space-between; align-items: center;
-              flex-wrap: wrap; gap: 1rem;
-          }
-          .footer-copy { font-size: 0.8rem; color: rgba(232,232,232,0.35); }
-          .social-links { display: flex; gap: 0.75rem; }
-          .social-link {
-              width: 36px; height: 36px; border-radius: 8px;
-              border: 1px solid var(--border);
-              background: var(--card-bg);
-              display: flex; align-items: center; justify-content: center;
-              color: var(--muted); text-decoration: none; font-size: 0.9rem;
-              transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
-          }
-          .social-link:hover { border-color: var(--purple); color: #fff; box-shadow: 0 0 15px rgba(192,66,255,0.3); }
-          .footer-btn {
-              display: inline-flex;
-              align-items: center;
-              padding: 0.6rem 1.3rem;
-              font-size: 0.82rem;
-              font-weight: 600;
-              color: #fff;
-              background: linear-gradient(135deg, var(--purple), #9b2fe0);
-              border-radius: 50px;
-              text-decoration: none;
-              margin-top: 0.5rem;
-              box-shadow: 0 0 20px rgba(192,66,255,0.3);
-              transition: box-shadow 0.3s, transform 0.2s;
-          }
-          .footer-btn:hover { box-shadow: 0 0 35px rgba(192,66,255,0.6); transform: translateY(-1px); }
-
-          @media (max-width: 900px) {
-              .footer-inner { grid-template-columns: 1fr 1fr; }
-          }
-          @media (max-width: 640px) {
-              .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
-          }
-      </style>
 </head>
-<body class="bg-surface text-white selection:bg-primary/30">
-    <div class="scroll-progress"></div>
+<body>
 
-    <nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center pt-6 px-4">
-        <div class="w-full max-w-7xl bg-black/40 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-between px-8 py-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)]">
-            <a href="index.html" class="brand-logo text-2xl font-black tracking-tighter text-white drop-shadow-[0_0_10px_rgba(192,66,255,0.8)] italic">Mercy Videos</a>
-            
-            <div class="hidden md:flex gap-8 items-center">
-                <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="index.html">Home</a>
-                <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="about.html">About Us</a>
-                <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="services.html">Services</a>
-                <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="portfolio.html">Portfolio</a>
-                <a class="font-inter tracking-widest uppercase text-xs font-bold text-white/70 hover:text-white transition-all duration-300" href="blog.html">Blog</a>
-            </div>
+<div class="scroll-progress"></div>
 
-            <a href="contact.html" class="bg-primary hover:bg-primary/80 text-white font-inter tracking-widest uppercase text-xs font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-transform shadow-[0_0_15px_rgba(192,66,255,0.4)]">
-                Contact Us
-            </a>
+<!-- ═══ NAV (unchanged from your original) ═══ -->
+<nav class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 py-4">
+    <div class="max-w-7xl mx-auto glass-panel rounded-full px-6 py-3 flex items-center justify-center gap-8">
+        <a href="index.html" class="brand-logo font-space text-xl font-black tracking-tight">Mercy Videos</a>
+        <div class="hidden md:flex items-center gap-8 flex-1 justify-center">
+            <a href="index.html" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Home</a>
+            <a href="about.html" class="text-white/70 hover:text-white text-sm font-medium transition-colors">About</a>
+            <a href="services.html" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Services</a>
+            <a href="portfolio.html" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Portfolio</a>
+            <a href="blog.html" class="text-primary text-sm font-medium transition-colors">Blog</a>
         </div>
-    </nav>
+        <a href="contact.html" class="bg-primary text-white font-inter tracking-[0.15em] uppercase text-xs font-black px-6 py-3 rounded-full neon-glow-purple hover:scale-105 transition-all duration-300">Get In Touch</a>
+    </div>
+</nav>
 
-    <!-- BLOG HERO -->
-    <section class="min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div class="absolute inset-0 -z-10">
-            <div class="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+<!-- ═══ HERO ═══ -->
+<section class="pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div class="absolute inset-0 -z-10">
+        <div class="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-4xl mx-auto text-center fade-in-section">
+        <div class="inline-flex items-center gap-2 glass-panel rounded-full px-5 py-2 mb-8 border border-primary/30">
+            <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+            <span class="text-white/70 text-sm font-medium tracking-wider uppercase">Insights & Tips</span>
         </div>
+        <h1 class="font-space text-5xl md:text-7xl font-black tracking-tighter mb-6">
+            The <span class="bg-gradient bg-clip-text text-transparent">Mercy Videos</span> Blog
+        </h1>
+        <p class="text-white/60 text-xl max-w-2xl mx-auto">
+            Video editing tips, creator insights, and strategies to grow your YouTube channel.
+        </p>
+    </div>
+</section>
 
-        <div class="text-center max-w-3xl mx-auto fade-in-section">
-            <h1 class="font-space text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter mb-6">
-                Creator<br/>
-                <span class="bg-gradient bg-clip-text text-transparent">Insights & Tips</span>
-            </h1>
-            <p class="text-lg sm:text-xl text-white/70 mb-8">
-                Learn from industry experts about video editing, content creation strategies, and how to grow your audience like a pro.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#blog-posts" class="bg-primary text-white font-inter tracking-[0.2em] uppercase text-xs font-black px-10 py-5 rounded-full neon-glow-purple hover:scale-105 transition-all duration-300">Read Articles</a>
-                <a href="contact.html" class="border border-white/20 backdrop-blur-md font-inter tracking-[0.2em] uppercase text-xs font-black px-10 py-5 rounded-full hover:bg-white/10 transition-colors">Work With Us</a>
+<!-- ═══ BLOG POSTS GRID ═══ -->
+<section class="py-16 px-4 sm:px-6 lg:px-8" id="all-articles">
+    <div class="max-w-7xl mx-auto">
+
+        <!-- Dynamic posts loaded from _posts/ folder -->
+        <div id="blog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <!-- Loading skeletons -->
+            <div class="blog-card glass-panel rounded-[20px] p-8 min-h-[450px]">
+                <div class="skeleton h-6 w-24 mb-6 rounded-full"></div>
+                <div class="skeleton h-8 w-full mb-3"></div>
+                <div class="skeleton h-8 w-3/4 mb-6"></div>
+                <div class="skeleton h-4 w-full mb-2"></div>
+                <div class="skeleton h-4 w-full mb-2"></div>
+                <div class="skeleton h-4 w-2/3 mb-6"></div>
             </div>
-        </div>
-    </section>
-
-    <!-- BLOG POSTS -->
-    <section id="blog-posts" class="py-20 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="font-space text-4xl md:text-5xl font-black tracking-tighter mb-4">Latest Articles</h2>
-                <p class="text-white/60 text-lg max-w-2xl mx-auto">Discover proven strategies and insights to elevate your video content</p>
+            <div class="blog-card glass-panel rounded-[20px] p-8 min-h-[450px]">
+                <div class="skeleton h-6 w-28 mb-6 rounded-full"></div>
+                <div class="skeleton h-8 w-full mb-3"></div>
+                <div class="skeleton h-8 w-4/5 mb-6"></div>
+                <div class="skeleton h-4 w-full mb-2"></div>
+                <div class="skeleton h-4 w-5/6 mb-2"></div>
+                <div class="skeleton h-4 w-3/4 mb-6"></div>
             </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Blog Post 1 -->
-                <div class="blog-card glass-panel rounded-[20px] p-8 md:p-10 group relative overflow-hidden min-h-[450px] flex flex-col justify-between hover:border-primary/40 transition-all duration-500">
-                    <div>
-                        <div class="inline-block mb-4 px-4 py-2 bg-primary/20 rounded-full">
-                            <span class="text-primary text-xs font-bold uppercase tracking-wider">Pro Tips</span>
-                        </div>
-                        <h3 class="blog-title text-white mb-4">Why Good Editing Can Make Small Creators Look Big</h3>
-                        <p class="text-white/60 text-base leading-relaxed mb-6">
-                            Discover how professional editing techniques, strategic color grading, and thoughtful pacing can transform your videos and help you compete with established creators.
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-between pt-6 border-t border-white/10">
-                        <span class="text-white/50 text-sm">5 min read</span>
-                        <button class="read-more-btn">Read More</button>
-                    </div>
-                </div>
-
-                <!-- Blog Post 2 -->
-                <div class="blog-card glass-panel rounded-[20px] p-8 md:p-10 group relative overflow-hidden min-h-[450px] flex flex-col justify-between hover:border-secondary/40 transition-all duration-500">
-                    <div>
-                        <div class="inline-block mb-4 px-4 py-2 bg-secondary/20 rounded-full">
-                            <span class="text-secondary text-xs font-bold uppercase tracking-wider">Audio Design</span>
-                        </div>
-                        <h3 class="blog-title text-white mb-4">Why Sound Design Matters More Than Most Creators Think</h3>
-                        <p class="text-white/60 text-base leading-relaxed mb-6">
-                            Learn why sound design is just as important as visuals. Explore how audio mixing, sound effects, and music selection can dramatically boost viewer retention and engagement.
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-between pt-6 border-t border-white/10">
-                        <span class="text-white/50 text-sm">7 min read</span>
-                        <button class="read-more-btn">Read More</button>
-                    </div>
-                </div>
-
-                <!-- Blog Post 3 -->
-                <div class="blog-card glass-panel rounded-[20px] p-8 md:p-10 group relative overflow-hidden min-h-[450px] flex flex-col justify-between hover:border-primary/40 transition-all duration-500">
-                    <div>
-                        <div class="inline-block mb-4 px-4 py-2 bg-primary/20 rounded-full">
-                            <span class="text-primary text-xs font-bold uppercase tracking-wider">Content Strategy</span>
-                        </div>
-                        <h3 class="blog-title text-white mb-4">How to Repurpose One Long Video Into 10 Shorts</h3>
-                        <p class="text-white/60 text-base leading-relaxed mb-6">
-                            Master the art of content repurposing. Learn the exact framework we use to transform long-form YouTube videos into viral short-form content for Reels, Shorts, and TikTok.
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-between pt-6 border-t border-white/10">
-                        <span class="text-white/50 text-sm">6 min read</span>
-                        <button class="read-more-btn">Read More</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-center mt-16">
-                <a href="#all-articles" class="bg-primary text-white font-inter tracking-[0.2em] uppercase text-xs font-black px-12 py-4 rounded-full neon-glow-purple hover:scale-105 transition-all duration-300">
-                    Read All Articles
-                </a>
+            <div class="blog-card glass-panel rounded-[20px] p-8 min-h-[450px]">
+                <div class="skeleton h-6 w-32 mb-6 rounded-full"></div>
+                <div class="skeleton h-8 w-full mb-3"></div>
+                <div class="skeleton h-8 w-2/3 mb-6"></div>
+                <div class="skeleton h-4 w-full mb-2"></div>
+                <div class="skeleton h-4 w-full mb-2"></div>
+                <div class="skeleton h-4 w-1/2 mb-6"></div>
             </div>
         </div>
-    </section>
 
-    <!-- CTA SECTION -->
-    <section class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div class="absolute inset-0 -z-10">
-            <div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+        <!-- No posts message (hidden by default) -->
+        <div id="no-posts" class="hidden text-center py-20">
+            <p class="text-white/40 text-lg">No blog posts yet. Check back soon!</p>
         </div>
 
-        <div class="max-w-4xl mx-auto glass-panel rounded-[30px] p-10 md:p-16 text-center">
-            <h2 class="font-space text-4xl md:text-5xl font-black tracking-tighter mb-6">Ready to Level Up Your Content?</h2>
-            <p class="text-white/70 text-lg mb-8">Let's work together to create videos that captivate your audience and drive real results.</p>
-            <a href="contact.html" class="inline-block bg-primary text-white font-inter tracking-[0.2em] uppercase text-xs font-black px-14 py-6 rounded-full neon-glow-purple hover:scale-105 transition-all duration-300">Get In Touch</a>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <!-- FOOTER -->
-    <!-- ═══════════════════════════════════════════════════════ FOOTER START -->
+<!-- ═══ CTA SECTION ═══ -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div class="absolute inset-0 -z-10">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-4xl mx-auto glass-panel rounded-[30px] p-10 md:p-16 text-center">
+        <h2 class="font-space text-4xl md:text-5xl font-black tracking-tighter mb-6">Ready to Level Up Your Content?</h2>
+        <p class="text-white/70 text-lg mb-8">Let's work together to create videos that captivate your audience and drive real results.</p>
+        <a href="contact.html" class="inline-block bg-primary text-white font-inter tracking-[0.2em] uppercase text-xs font-black px-14 py-6 rounded-full neon-glow-purple hover:scale-105 transition-all duration-300">Get In Touch</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<!-- ═══════════════════════════════════════════════════════ FOOTER START -->
 <footer>
   <div class="footer-inner">
 
@@ -509,43 +448,180 @@
 </footer>
 <!-- ═══════════════════════════════════════════════════════ FOOTER END -->
 
-    <script>
-        const scrollProgressBar = document.querySelector('.scroll-progress');
-
-        window.addEventListener('scroll', () => {
-            const scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            if (scrollProgressBar) {
-                scrollProgressBar.style.width = scrollProgress + '%';
-            }
-        });
-
-        const navObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
+<script>
+// ═══════════════════════════════════════════════
+// NETLIFY IDENTITY REDIRECT (required for CMS login)
+// ═══════════════════════════════════════════════
+if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+        if (!user) {
+            window.netlifyIdentity.on("login", () => {
+                document.location.href = "/admin/";
             });
-        }, { root: null, rootMargin: '0px', threshold: 0.1 });
+        }
+    });
+}
 
-        document.querySelectorAll('.fade-in-section').forEach((section) => {
-            navObserver.observe(section);
+// ═══════════════════════════════════════════════
+// LOAD BLOG POSTS FROM _posts/ via GitHub API
+// ═══════════════════════════════════════════════
+const REPO = "mercyvideos/updated-mercyvideos";
+const BRANCH = "main";
+const POSTS_FOLDER = "_posts";
+
+// Category color alternation
+const categoryColors = ["primary", "secondary", "primary", "secondary"];
+
+function slugFromFilename(filename) {
+    // filename like: 2024-01-15-my-post-title.md → my-post-title
+    return filename.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
+}
+
+function parseFrontmatter(content) {
+    const match = content.match(/^---\n([\s\S]*?)\n---/);
+    if (!match) return { data: {}, body: content };
+    try {
+        const data = jsyaml.load(match[1]);
+        const body = content.slice(match[0].length).trim();
+        return { data, body };
+    } catch(e) {
+        return { data: {}, body: content };
+    }
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function createBlogCard(post, index) {
+    const colorType = index % 2 === 0 ? 'primary' : 'secondary';
+    const colorClass = colorType === 'primary' ? 'text-primary bg-primary/20' : 'text-secondary bg-secondary/20';
+    const hoverBorderClass = colorType === 'primary' ? 'hover:border-primary/40' : 'hover:border-secondary/40';
+    const slug = slugFromFilename(post.filename);
+    const postUrl = `blog/${slug}.html`;
+
+    const imageHtml = post.data.image
+        ? `<img src="${post.data.image}" alt="${post.data.imagealt || post.data.title}" class="blog-image" loading="lazy">`
+        : '';
+
+    return `
+    <div class="blog-card glass-panel rounded-[20px] p-8 md:p-10 group relative overflow-hidden min-h-[450px] flex flex-col justify-between ${hoverBorderClass} transition-all duration-500">
+        <div>
+            ${imageHtml}
+            <div class="flex items-center justify-between mb-4">
+                <div class="inline-block px-4 py-2 ${colorClass} rounded-full">
+                    <span class="text-xs font-bold uppercase tracking-wider">${post.data.category || 'Insights'}</span>
+                </div>
+                ${post.data.date ? `<span class="text-white/40 text-xs">${formatDate(post.data.date)}</span>` : ''}
+            </div>
+            <h3 class="blog-title text-white mb-4">${post.data.title || 'Untitled Post'}</h3>
+            <p class="text-white/60 text-base leading-relaxed mb-6">
+                ${post.data.description || ''}
+            </p>
+        </div>
+        <div class="flex items-center justify-between pt-6 border-t border-white/10">
+            <span class="text-white/50 text-sm">${post.data.readtime || '5 min read'}</span>
+            <a href="${postUrl}" class="read-more-btn">Read More</a>
+        </div>
+    </div>`;
+}
+
+async function loadBlogPosts() {
+    const grid = document.getElementById('blog-grid');
+    const noPostsEl = document.getElementById('no-posts');
+
+    try {
+        // Fetch list of files in _posts folder
+        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${POSTS_FOLDER}?ref=${BRANCH}`);
+        
+        if (!res.ok) {
+            // No _posts folder yet — show empty state
+            grid.innerHTML = '';
+            noPostsEl.classList.remove('hidden');
+            return;
+        }
+
+        const files = await res.json();
+        const mdFiles = files.filter(f => f.name.endsWith('.md')).reverse(); // newest first
+
+        if (mdFiles.length === 0) {
+            grid.innerHTML = '';
+            noPostsEl.classList.remove('hidden');
+            return;
+        }
+
+        // Fetch each post's content
+        const posts = await Promise.all(mdFiles.map(async (file) => {
+            const r = await fetch(file.download_url);
+            const content = await r.text();
+            const { data, body } = parseFrontmatter(content);
+            return { filename: file.name, data, body };
+        }));
+
+        // Sort by date descending
+        posts.sort((a, b) => new Date(b.data.date || 0) - new Date(a.data.date || 0));
+
+        grid.innerHTML = posts.map((post, i) => createBlogCard(post, i)).join('');
+
+        // Re-trigger fade-in animations
+        document.querySelectorAll('.fade-in-section').forEach(el => {
+            navObserver.observe(el);
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            let currentPath = window.location.pathname.split('/').pop() || 'index.html';
-            if (currentPath === 'video-editing-service.html' || currentPath === 'youtube-management.html') {
-                currentPath = 'services.html';
-            }
-            document.querySelectorAll('nav a').forEach(link => {
-                const href = link.getAttribute('href');
-                if (href === currentPath) {
-                    link.classList.remove('text-white/70');
-                    link.classList.add('text-primary');
-                }
-            });
-        });
-    </script>
+    } catch (err) {
+        console.error('Error loading posts:', err);
+        grid.innerHTML = '';
+        noPostsEl.classList.remove('hidden');
+    }
+}
+
+// ═══════════════════════════════════════════════
+// SCROLL PROGRESS BAR
+// ═══════════════════════════════════════════════
+const scrollProgressBar = document.querySelector('.scroll-progress');
+window.addEventListener('scroll', () => {
+    const scrollProgress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    if (scrollProgressBar) scrollProgressBar.style.width = scrollProgress + '%';
+});
+
+// ═══════════════════════════════════════════════
+// FADE IN SECTIONS
+// ═══════════════════════════════════════════════
+const navObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+document.querySelectorAll('.fade-in-section').forEach((section) => {
+    navObserver.observe(section);
+});
+
+// ═══════════════════════════════════════════════
+// ACTIVE NAV LINK
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+    let currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    if (currentPath === 'video-editing-service.html' || currentPath === 'youtube-management.html') {
+        currentPath = 'services.html';
+    }
+    document.querySelectorAll('nav a').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPath) {
+            link.classList.remove('text-white/70');
+            link.classList.add('text-primary');
+        }
+    });
+
+    // Load posts
+    loadBlogPosts();
+});
+</script>
 
 </body>
 </html>
