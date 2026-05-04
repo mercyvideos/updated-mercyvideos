@@ -6,21 +6,13 @@
   <title>Mercy Videos | Blog Admin</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
-    // Set API URL BEFORE Decap CMS loads — this is the key fix
-    // Points to your Netlify site where Identity is enabled
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.init({
-        APIUrl: "https://delightful-druid-09e5d4.netlify.app/.netlify/identity"
-      });
-    } else {
-      document.addEventListener("DOMContentLoaded", function() {
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.init({
-            APIUrl: "https://delightful-druid-09e5d4.netlify.app/.netlify/identity"
-          });
-        }
-      });
-    }
+    window.addEventListener("load", function() {
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.init({
+          APIUrl: "https://benevolent-tiramisu-650f1a.netlify.app/.netlify/identity"
+        });
+      }
+    });
   </script>
 </head>
 <body>

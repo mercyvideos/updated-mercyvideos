@@ -2,8 +2,8 @@ backend:
   name: git-gateway
   repo: mercyvideos/updated-mercyvideos
   branch: main
-  identity_url: https://delightful-druid-09e5d4.netlify.app/.netlify/identity
-  gateway_url: https://delightful-druid-09e5d4.netlify.app/.netlify/git/github
+  identity_url: https://benevolent-tiramisu-650f1a.netlify.app/.netlify/identity
+  gateway_url: https://benevolent-tiramisu-650f1a.netlify.app/.netlify/git/github
 
 media_folder: "images/blog"
 public_folder: "/images/blog"
@@ -34,4 +34,4 @@ collections:
       - { label: "Read Time (e.g. 5 min read)", name: "readtime", widget: "string", default: "5 min read" }
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Image Alt Text", name: "imagealt", widget: "string", required: false }
-      - { label: "Blog Content", name: "body", widget: "markdown" }
+      - { label: "Blog Content", name: "body", widget: "markdown" } 
